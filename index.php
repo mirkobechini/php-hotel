@@ -1,6 +1,10 @@
 <!-- Array -->
 <?php
-    $hotels = [
+
+$voteFilter= isset($_GET["vote"])? $_GET["vote"] : null;
+$parkFilter= isset($_GET["parking"]); 
+
+   $hotels = [
 
         [
             'name' => 'Hotel Belvedere',
@@ -37,8 +41,21 @@
             'vote' => 2,
             'distance_to_center' => 50
         ],
-
+        
     ];
+
+    function filterByVote($hotel){
+        global $voteFilter;
+        return $hotel["vote"] >= $voteFilter;
+    }
+
+    function filterByPark($hotel){
+        global $parkFilter;
+        return $hotel["parking"] == $parkFilter;
+    }
+   $votedHotels = array_filter($hotels, "filterByVote");
+   $filteredHotels = array_filter($votedHotels, "filterByPark");
+
 
 ?>
 
@@ -76,6 +93,31 @@
         <div class="container">
             <h1>Welcome to Our Hotel</h1>
             <p>Here is our hotels</p>
+
+            <div class="container my-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Filtri</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <form action = "index.php" method = "GET">
+                            <div class="mb-3 ">
+                                <label class="form-check-label" for="parking">Parcheggio</label>
+                                <input type="checkbox" class="form-check-input" name="parking">
+                            </div>
+                            <div class="mb-3">
+                                <label for="vote" class="form-label">Voto</label>
+                                <input type="number" class="form-control" name="vote" width ="20px">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Filtra</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
             <table class = "table table-striped table-bordered">
                 <tr>
                     <th>Nome</th>
@@ -85,7 +127,7 @@
                     <th>Distanza dal centro</th>
                 </tr>
                 <?php
-                    foreach($hotels as $hotel){
+                    foreach($filteredHotels as $hotel){
                         echo "<tr>";
                         foreach($hotel as $key => $value){
                             echo ($key != "name" && $key != "description")? "<td class= \"text-center\">": "<td>";

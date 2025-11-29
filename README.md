@@ -17,5 +17,5 @@ Se non viene specificato nessun filtro, visualizzare come in precedenza tutti gl
 ## TodoList
 - [X] Stampare tabella con tutti hotel e dati
 - [X] Aggiungere stile con Bootstrap
-- [] Aggiungere form con scelta di parcheggio e voto
-- [] Far funzionare entrambi i filtri insieme
+- [X] Aggiungere form con scelta di parcheggio e voto
+- [X] Far funzionare entrambi i filtri insieme
