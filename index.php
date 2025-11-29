@@ -1,4 +1,4 @@
-<!-- Array-->
+<!-- Array -->
 <?php
     $hotels = [
 
@@ -48,27 +48,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 </head>
 <body>
-    <h1>Welcome to Our Hotel</h1>
-    <p>Here is our hotels</p>
-    <table>
-        <tr>
-            <th>Nome</th>
-            <th>Descrizione</th>
-            <th>Parcheggio</th>
-            <th>Voto</th>
-            <th>Distanza dall centro</th>
-        </tr>
-        <?php
-            foreach($hotels as $hotel){
-                echo "<tr>";
-                foreach($hotel as $key => $value){
-                    echo "<td> $value </td>";
-                }
-                echo "</tr>";
-            }
-        ?>
-    </table>
+
+    <!-- Header -->
+    <header>
+        <div class="bg-dark">
+            <nav class="navbar container">
+                <div class="container-fluid">
+                    <span class="navbar-brand mb-0 h1 text-white">First PHP Exercise</span>
+                </div>
+            </nav>
+        </div>    
+    </header>
+    <!-- Main -->
+    <main> 
+        <div class="container">
+            <h1>Welcome to Our Hotel</h1>
+            <p>Here is our hotels</p>
+            <table class = "table table-striped table-bordered">
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrizione</th>
+                    <th>Parcheggio</th>
+                    <th>Voto</th>
+                    <th>Distanza dal centro</th>
+                </tr>
+                <?php
+                    foreach($hotels as $hotel){
+                        echo "<tr>";
+                        foreach($hotel as $key => $value){
+                            echo ($key != "name" && $key != "description")? "<td class= \"text-center\">": "<td>";
+                            if($key == "parking"){
+                                echo $value? "<i class=\"bi bi-check2-square text-success\"></i>" : "<i class=\"bi bi-x-square text-danger\"></i>";
+                            }else if($key == "vote"){
+                                echo "$value/5";
+                            }else if($key == "distance_to_center"){
+                                echo "$value km";
+                            }else{
+                                echo $value;
+                            }
+                            echo "</td>";
+                        }
+                        echo "</tr>";
+                    }
+                ?>
+            </table>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="bg-dark-subtle">
+            <div class="container text-white">
+                <p>Esercizio di Mirko Bechini</p>
+            </div>
+        </div>
+    </footer>
+   
 </body>
 </html>
