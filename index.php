@@ -104,11 +104,11 @@ $parkFilter= isset($_GET["parking"]);
                         <form action = "index.php" method = "GET">
                             <div class="mb-3 ">
                                 <label class="form-check-label" for="parking">Parcheggio</label>
-                                <input type="checkbox" class="form-check-input" name="parking">
+                                <input type="checkbox" class="form-check-input" name="parking" <?php echo $parkFilter?'checked':'' ?>>
                             </div>
                             <div class="mb-3">
                                 <label for="vote" class="form-label">Voto</label>
-                                <input type="number" class="form-control" name="vote" width ="20px">
+                                <input type="number" class="form-control" name="vote" width ="20px" value=<?php echo $voteFilter?>>
                             </div>
                             
                             <button type="submit" class="btn btn-primary">Filtra</button>
