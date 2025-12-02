@@ -1,8 +1,16 @@
 <!-- Array -->
 <?php
 
-$voteFilter= isset($_GET["vote"])? $_GET["vote"] : null;
-$parkFilter= isset($_GET["parking"]); 
+$voteFilter= 0;
+$parkFilter = false;
+
+if(isset($_GET["vote"]) && (0 < $_GET["vote"] && $_GET["vote"] <= 5 ) && is_numeric($_GET["vote"])){
+    $voteFilter = $_GET["vote"];
+}
+
+if(isset($_GET["parking"]) && $_GET["parking"]== "on"){
+    $parkFilter = true;
+}
 
    $hotels = [
 
@@ -43,18 +51,6 @@ $parkFilter= isset($_GET["parking"]);
         ],
         
     ];
-
-    function filterByVote($hotel){
-        global $voteFilter;
-        return $hotel["vote"] >= $voteFilter;
-    }
-
-    function filterByPark($hotel){
-        global $parkFilter;
-        return $hotel["parking"] == $parkFilter;
-    }
-   $votedHotels = array_filter($hotels, "filterByVote");
-   $filteredHotels = array_filter($votedHotels, "filterByPark");
 
 
 ?>
@@ -108,7 +104,7 @@ $parkFilter= isset($_GET["parking"]);
                             </div>
                             <div class="mb-3">
                                 <label for="vote" class="form-label">Voto</label>
-                                <input type="number" class="form-control" name="vote" width ="20px" value=<?php echo $voteFilter?>>
+                                <input type="number" class="form-control" name="vote" id="name" min="1" max="5" width ="20px" value=<?php echo $voteFilter?>>
                             </div>
                             
                             <button type="submit" class="btn btn-primary">Filtra</button>
@@ -127,22 +123,35 @@ $parkFilter= isset($_GET["parking"]);
                     <th>Distanza dal centro</th>
                 </tr>
                 <?php
-                    foreach($filteredHotels as $hotel){
-                        echo "<tr>";
-                        foreach($hotel as $key => $value){
-                            echo ($key != "name" && $key != "description")? "<td class= \"text-center\">": "<td>";
-                            if($key == "parking"){
-                                echo $value? "<i class=\"bi bi-check2-square text-success\"></i>" : "<i class=\"bi bi-x-square text-danger\"></i>";
-                            }else if($key == "vote"){
-                                echo "$value/5";
-                            }else if($key == "distance_to_center"){
-                                echo "$value km";
-                            }else{
-                                echo $value;
-                            }
-                            echo "</td>";
+                    foreach($hotels as $hotel){
+                        if($parkFilter && !$hotel["parking"]){
+                            continue;
                         }
-                        echo "</tr>";
+
+                        if($voteFilter > $hotel["vote"]){
+                            continue;
+                        }
+                    ?>
+                        <tr>
+                            <?php
+                                foreach($hotel as $key => $value){
+                                    echo ($key != "name" && $key != "description")? "<td class= \"text-center\">": "<td>";
+                                    if($key == "parking"){
+                                        echo $value? "<i class=\"bi bi-check2-square text-success\"></i>" : "<i class=\"bi bi-x-square text-danger\"></i>";
+                                    }else if($key == "vote"){
+                                        echo "$value/5";
+                                    }else if($key == "distance_to_center"){
+                                        echo "$value km";
+                                    }else{
+                                        echo $value;
+                                    }
+                                    ?>
+                                    </td>
+                                    <?php
+                                }
+                            ?>
+                        </tr>
+                    <?php
                     }
                 ?>
             </table>
