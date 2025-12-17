@@ -77,7 +77,7 @@ $hotels = [
 <body>
 
     <!-- Header -->
-    <?php include_once "../../boolean/components/Header.php"; ?>
+    <?php include_once "./components/Header.php"; ?>
     <!-- Main -->
     <main>
         <div class="container">
