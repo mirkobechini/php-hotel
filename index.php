@@ -1,62 +1,63 @@
 <!-- Array -->
 <?php
 
-$voteFilter= 0;
+$voteFilter = 0;
 $parkFilter = false;
 
-if(isset($_GET["vote"]) && (0 < $_GET["vote"] && $_GET["vote"] <= 5 ) && is_numeric($_GET["vote"])){
+if (isset($_GET["vote"]) && (0 < $_GET["vote"] && $_GET["vote"] <= 5) && is_numeric($_GET["vote"])) {
     $voteFilter = $_GET["vote"];
 }
 
-if(isset($_GET["parking"]) && $_GET["parking"]== "on"){
+if (isset($_GET["parking"]) && $_GET["parking"] == "on") {
     $parkFilter = true;
 }
 
-   $hotels = [
+$hotels = [
 
-        [
-            'name' => 'Hotel Belvedere',
-            'description' => 'Hotel Belvedere Descrizione',
-            'parking' => true,
-            'vote' => 4,
-            'distance_to_center' => 10.4
-        ],
-        [
-            'name' => 'Hotel Futuro',
-            'description' => 'Hotel Futuro Descrizione',
-            'parking' => true,
-            'vote' => 2,
-            'distance_to_center' => 2
-        ],
-        [
-            'name' => 'Hotel Rivamare',
-            'description' => 'Hotel Rivamare Descrizione',
-            'parking' => false,
-            'vote' => 1,
-            'distance_to_center' => 1
-        ],
-        [
-            'name' => 'Hotel Bellavista',
-            'description' => 'Hotel Bellavista Descrizione',
-            'parking' => false,
-            'vote' => 5,
-            'distance_to_center' => 5.5
-        ],
-        [
-            'name' => 'Hotel Milano',
-            'description' => 'Hotel Milano Descrizione',
-            'parking' => true,
-            'vote' => 2,
-            'distance_to_center' => 50
-        ],
-        
-    ];
+    [
+        'name' => 'Hotel Belvedere',
+        'description' => 'Hotel Belvedere Descrizione',
+        'parking' => true,
+        'vote' => 4,
+        'distance_to_center' => 10.4
+    ],
+    [
+        'name' => 'Hotel Futuro',
+        'description' => 'Hotel Futuro Descrizione',
+        'parking' => true,
+        'vote' => 2,
+        'distance_to_center' => 2
+    ],
+    [
+        'name' => 'Hotel Rivamare',
+        'description' => 'Hotel Rivamare Descrizione',
+        'parking' => false,
+        'vote' => 1,
+        'distance_to_center' => 1
+    ],
+    [
+        'name' => 'Hotel Bellavista',
+        'description' => 'Hotel Bellavista Descrizione',
+        'parking' => false,
+        'vote' => 5,
+        'distance_to_center' => 5.5
+    ],
+    [
+        'name' => 'Hotel Milano',
+        'description' => 'Hotel Milano Descrizione',
+        'parking' => true,
+        'vote' => 2,
+        'distance_to_center' => 50
+    ],
+
+];
 
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,20 +73,13 @@ if(isset($_GET["parking"]) && $_GET["parking"]== "on"){
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
 </head>
+
 <body>
 
     <!-- Header -->
-    <header>
-        <div class="bg-dark">
-            <nav class="navbar container">
-                <div class="container-fluid">
-                    <span class="navbar-brand mb-0 h1 text-white">First PHP Exercise</span>
-                </div>
-            </nav>
-        </div>    
-    </header>
+    <?php include_once "../../boolean/components/Header.php"; ?>
     <!-- Main -->
-    <main> 
+    <main>
         <div class="container">
             <h1>Welcome to Our Hotel</h1>
             <p>Here is our hotels</p>
@@ -97,16 +91,16 @@ if(isset($_GET["parking"]) && $_GET["parking"]== "on"){
                     </div>
                     <div class="card-body">
 
-                        <form action = "index.php" method = "GET">
+                        <form action="index.php" method="GET">
                             <div class="mb-3 ">
                                 <label class="form-check-label" for="parking">Parcheggio</label>
-                                <input type="checkbox" class="form-check-input" name="parking" <?php echo $parkFilter?'checked':'' ?>>
+                                <input type="checkbox" class="form-check-input" name="parking" <?php echo $parkFilter ? 'checked' : '' ?>>
                             </div>
                             <div class="mb-3">
                                 <label for="vote" class="form-label">Voto</label>
-                                <input type="number" class="form-control" name="vote" id="name" min="1" max="5" width ="20px" value=<?php echo $voteFilter?>>
+                                <input type="number" class="form-control" name="vote" id="name" min="1" max="5" width="20px" value=<?php echo $voteFilter ?>>
                             </div>
-                            
+
                             <button type="submit" class="btn btn-primary">Filtra</button>
                         </form>
                     </div>
@@ -114,7 +108,7 @@ if(isset($_GET["parking"]) && $_GET["parking"]== "on"){
             </div>
 
 
-            <table class = "table table-striped table-bordered">
+            <table class="table table-striped table-bordered">
                 <tr>
                     <th>Nome</th>
                     <th>Descrizione</th>
@@ -123,49 +117,44 @@ if(isset($_GET["parking"]) && $_GET["parking"]== "on"){
                     <th>Distanza dal centro</th>
                 </tr>
                 <?php
-                    foreach($hotels as $hotel){
-                        if($parkFilter && !$hotel["parking"]){
-                            continue;
-                        }
-
-                        if($voteFilter > $hotel["vote"]){
-                            continue;
-                        }
-                    ?>
-                        <tr>
-                            <?php
-                                foreach($hotel as $key => $value){
-                                    echo ($key != "name" && $key != "description")? "<td class= \"text-center\">": "<td>";
-                                    if($key == "parking"){
-                                        echo $value? "<i class=\"bi bi-check2-square text-success\"></i>" : "<i class=\"bi bi-x-square text-danger\"></i>";
-                                    }else if($key == "vote"){
-                                        echo "$value/5";
-                                    }else if($key == "distance_to_center"){
-                                        echo "$value km";
-                                    }else{
-                                        echo $value;
-                                    }
-                                    ?>
-                                    </td>
-                                    <?php
-                                }
-                            ?>
-                        </tr>
-                    <?php
+                foreach ($hotels as $hotel) {
+                    if ($parkFilter && !$hotel["parking"]) {
+                        continue;
                     }
+
+                    if ($voteFilter > $hotel["vote"]) {
+                        continue;
+                    }
+                ?>
+                    <tr>
+                        <?php
+                        foreach ($hotel as $key => $value) {
+                            echo ($key != "name" && $key != "description") ? "<td class= \"text-center\">" : "<td>";
+                            if ($key == "parking") {
+                                echo $value ? "<i class=\"bi bi-check2-square text-success\"></i>" : "<i class=\"bi bi-x-square text-danger\"></i>";
+                            } else if ($key == "vote") {
+                                echo "$value/5";
+                            } else if ($key == "distance_to_center") {
+                                echo "$value km";
+                            } else {
+                                echo $value;
+                            }
+                        ?>
+                            </td>
+                        <?php
+                        }
+                        ?>
+                    </tr>
+                <?php
+                }
                 ?>
             </table>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer>
-        <div class="bg-dark-subtle">
-            <div class="container text-white">
-                <p>Esercizio di Mirko Bechini</p>
-            </div>
-        </div>
-    </footer>
-   
+    <?php include_once "../../boolean/components/Footer.php"; ?>
+
 </body>
+
 </html>
